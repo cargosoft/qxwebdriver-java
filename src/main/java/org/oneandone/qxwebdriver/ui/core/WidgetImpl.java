@@ -30,8 +30,10 @@ import org.oneandone.qxwebdriver.ui.Widget;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.interactions.Mouse;
@@ -89,56 +91,56 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		actions.dragAndDrop(getContentElement(), target.getContentElement());
 		actions.perform();
 	}
-	
+
 	public void dragOver(Widget target) throws InterruptedException {
 		Mouse mouse = ((HasInputDevices)driver.getWebDriver()).getMouse();
 		Locatable root = (Locatable) driver.findElement(By.tagName("body"));
 		//cast WebElement to Locatable
 		Locatable sourceL = (Locatable)contentElement;
 		Locatable targetL = (Locatable)target.getContentElement();
-		
+
 		Coordinates coord = root.getCoordinates();
 		mouse.mouseDown(sourceL.getCoordinates());
-		
+
 		//get source position (center,center)
 		int sourceX = sourceL.getCoordinates().onPage().x + ((int) contentElement.getSize().width /2);
 		int sourceY = sourceL.getCoordinates().onPage().y + ((int) contentElement.getSize().height /2);
-		
+
 		// get target position (center, center)
 		int targetX = targetL.getCoordinates().onPage().x + ((int) target.getContentElement().getSize().width /2);
 		int targetY = targetL.getCoordinates().onPage().y + ((int) target.getContentElement().getSize().height /2);
-		
+
 
 		//compute deltas between source and target position
 		//delta must be positive, however
-		//also we have to define the direction 
+		//also we have to define the direction
 		int deltaX;
 		int directionX=1; //move direction is right
-		
+
 		int deltaY;
 		int directionY=1; //move direction is bottom
-		
-		deltaX = targetX-sourceX; 
+
+		deltaX = targetX-sourceX;
 		if (deltaX < 0){
 			deltaX *= -1;
 			directionX=-1; // move direction is left
 		}
-		
+
 		deltaY = targetY-sourceY;
 		if(deltaY <0){
 			deltaY *= -1;
 			directionY=-1; // move direction is top
 		}
-		
-		
+
+
 		//define base delta, which must be the higher one
-		
+
 		int baseDelta = deltaX;
 		if (deltaY > deltaX) {
 			baseDelta = deltaY;
 		}
-		
-		
+
+
 		// iterate base delta, set mouse cursor in relation to delta x & delta y
 		int x = 0;
 		int y = 0;
@@ -149,11 +151,11 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 			}
 			x = (int) sourceX + (deltaX * i / baseDelta * directionX);
 			y = (int) sourceY + (deltaY * i / baseDelta * directionY);
-			
+
 			mouse.mouseMove(coord, x, y);
 			//System.out.println(x +", "+ y);
 			Thread.sleep(1);
-			
+
 			}
 		// source has the same coordinates as target
 		if(sourceX == targetX && sourceY == targetY){
@@ -164,19 +166,19 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	public void drop(Widget target) throws InterruptedException {
 		Mouse mouse = ((HasInputDevices)driver.getWebDriver()).getMouse();
 		dragOver(target);
-		
+
 		Locatable targetL=(Locatable)target.getContentElement();
 		mouse.mouseUp(targetL.getCoordinates());
-		
+
 	}
-	
+
 
 	public void click() {
 		Actions actions = new Actions(driver.getWebDriver());
 		actions.moveToElement(getContentElement());
 		actions.click();
 		actions.perform();
-		
+
 	}
 
 	public void sendKeys(CharSequence keysToSend) {
@@ -219,13 +221,13 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 		}
 		return driver.getWidgetForElement(element);
 	}
-	
+
 	public Boolean hasChildControl(String childControlId) {
 		Object result = jsRunner.runScript("hasChildControl",
 				contentElement, childControlId);
 		return (Boolean) result;
 	}
-	
+
 	public org.oneandone.qxwebdriver.ui.Widget getLayoutParent() {
 		Object result = jsRunner.runScript("getLayoutParent",
 				contentElement);
@@ -411,5 +413,10 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
 	public String getCssValue(String propertyName) {
 		return contentElement.getCssValue(propertyName);
 	}
+
+    @Override
+    public <X> X getScreenshotAs(OutputType<X> ot) throws WebDriverException {
+        return contentElement.getScreenshotAs(ot);
+    }
 
 }

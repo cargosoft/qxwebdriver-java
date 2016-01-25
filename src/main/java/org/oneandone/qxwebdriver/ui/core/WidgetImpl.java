@@ -32,6 +32,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -417,6 +418,11 @@ public class WidgetImpl implements org.oneandone.qxwebdriver.ui.Widget {
     @Override
     public <X> X getScreenshotAs(OutputType<X> ot) throws WebDriverException {
         return contentElement.getScreenshotAs(ot);
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return contentElement.getRect();
     }
 
 }

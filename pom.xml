@@ -115,6 +115,13 @@
       <groupId>com.opera</groupId>
       <artifactId>operadriver</artifactId>
       <version>1.5</version>
+      <exclusions>
+          <!-- requires guava 14.0 -> conflicts with selenium-safari-driver -->
+          <exclusion>
+              <groupId>com.google.guava</groupId>
+              <artifactId>guava</artifactId>
+          </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -134,6 +141,13 @@
       <groupId>io.selendroid</groupId>
       <artifactId>selendroid-standalone</artifactId>
       <version>0.17.0</version>
+      <exclusions>
+          <!-- requires guava 17.0 -> conflicts with selenium-safari-driver -->
+          <exclusion>
+              <groupId>com.google.guava</groupId>
+              <artifactId>guava</artifactId>
+          </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.selendroid</groupId>

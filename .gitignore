@@ -13,4 +13,7 @@ target/
 .classpath
 .project
 
-/chromedriver.log
+# NetBeans stuff #
+nbactions.xml
+
+chromedriver.log

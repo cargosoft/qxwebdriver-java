@@ -116,10 +116,15 @@
       <artifactId>operadriver</artifactId>
       <version>1.5</version>
       <exclusions>
-          <!-- requires guava 14.0 -> conflicts with selenium-safari-driver -->
+          <!-- requires guava 14.0 -> breaks selenium-safari-driver -->
           <exclusion>
               <groupId>com.google.guava</groupId>
               <artifactId>guava</artifactId>
+          </exclusion>
+          <!-- requires commons-exec 1.1 -> breaks selenium-java -->
+          <exclusion>
+              <groupId>org.apache.commons</groupId>
+              <artifactId>commons-exec</artifactId>
           </exclusion>
       </exclusions>
     </dependency>
@@ -142,10 +147,15 @@
       <artifactId>selendroid-standalone</artifactId>
       <version>0.17.0</version>
       <exclusions>
-          <!-- requires guava 17.0 -> conflicts with selenium-safari-driver -->
+          <!-- requires guava 17.0 -> breaks selenium-safari-driver -->
           <exclusion>
               <groupId>com.google.guava</groupId>
               <artifactId>guava</artifactId>
+          </exclusion>
+          <!-- requires commons-exec 1.1 -> breaks selenium-java -->
+          <exclusion>
+              <groupId>org.apache.commons</groupId>
+              <artifactId>commons-exec</artifactId>
           </exclusion>
       </exclusions>
     </dependency>
@@ -153,11 +163,6 @@
       <groupId>io.selendroid</groupId>
       <artifactId>selendroid-client</artifactId>
       <version>0.17.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-exec</artifactId>
-      <version>1.3</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
